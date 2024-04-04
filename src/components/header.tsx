@@ -2,8 +2,8 @@ import icon from "../assets/Logo.svg";
 
 const Header = () => {
   return (
-    <div className="bg-zinc-950 rounded-lg p-2">
-      <nav className="px-5 py-1">
+    <div className="container mb-5 ">
+      <nav className=" py-1 ">
         <ul className="flex gap-5 items-center font-medium ">
           <li>
             <a href="https://www.linkedin.com/in/emanuelbitencourt/">
