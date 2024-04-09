@@ -1,4 +1,5 @@
-import icon from "../assets/Logo.svg";
+import icon from "../../assets/Logo.svg";
+import NavLink from "./nav-link";
 
 const Header = () => {
   return (
@@ -11,13 +12,13 @@ const Header = () => {
             </a>
           </li>
           <li className="text-white text-3xl cursor-default">Manager Pass</li>
-          <div className="flex gap-5 items-center font-medium ">
-            <a href="">
-              <li className="text-zinc-400">Eventos</li>
-            </a>
-            <a href="">
-              <li>Participantes</li>
-            </a>
+          <div className="flex gap-5 items-center  ">
+            <NavLink href="/eventos" state={false}>
+              Eventos
+            </NavLink>
+            <NavLink href="/participantes" state={true}>
+              Participantes
+            </NavLink>
           </div>
         </ul>
       </nav>
