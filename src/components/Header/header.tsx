@@ -13,10 +13,10 @@ const Header = () => {
           </li>
           <li className="text-white text-3xl cursor-default">Manager Pass</li>
           <div className="flex gap-5 items-center  ">
-            <NavLink href="/eventos" state={false}>
+            <NavLink href="/eventos" checked={false}>
               Eventos
             </NavLink>
-            <NavLink href="/participantes" state={true}>
+            <NavLink href="/participantes" checked={true}>
               Participantes
             </NavLink>
           </div>

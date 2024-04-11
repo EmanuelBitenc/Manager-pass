@@ -1,7 +1,10 @@
 import { Search } from "lucide-react";
 import ParticipanteListTable from "./participanteListTable";
+import { useState } from "react";
 
 const ParticipantesList = () => {
+  const [pagina, setPagina] = useState(1);
+
   return (
     <div className="container">
       <div className=" flex gap-8 items-center  my-4">
@@ -15,7 +18,7 @@ const ParticipantesList = () => {
           />
         </div>
       </div>
-      <ParticipanteListTable />
+      <ParticipanteListTable pagina={pagina} setPagina={setPagina} />
     </div>
   );
 };
