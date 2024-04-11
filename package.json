@@ -1,6 +1,7 @@
 {
   "name": "manager-pass",
-  "private": true,
+  "private": false,
+  "homepage": "https://emanuelbitenc.github.io/Manager-pass/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
