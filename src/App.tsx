@@ -1,5 +1,5 @@
 import Header from "./components/Header/header";
-import ParticipantesList from "./components/participantesList";
+import ParticipantesList from "./components/ParticipantesList/participantesList";
 
 const App = () => {
   return (

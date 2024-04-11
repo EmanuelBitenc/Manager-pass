@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 
 interface NavLinkProps extends ComponentProps<"a"> {
   children: string;
-  state?: boolean;
+  checked?: boolean;
 }
 
 const NavLink = (props: NavLinkProps) => {
@@ -10,7 +10,7 @@ const NavLink = (props: NavLinkProps) => {
     <a
       {...props}
       className={
-        props.state
+        props.checked
           ? "font-medium text-sm  "
           : "font-medium text-sm text-zinc-300"
       }
