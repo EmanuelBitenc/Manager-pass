@@ -20,6 +20,8 @@ Este projeto utiliza as fontes Montserrat e Urbanist, importadas diretamente do 
 
 O back-end deste projeto foi desenvolvido pela Rocketseat no projeto NLW-Unite em Node.js. Você pode encontrar o repositório do back-end [aqui](https://github.com/rocketseat-education/nlw-unite-nodejs).
 
+No caso do publicado, estou utilizando a biblioteca Faker-js para que apareça dados gerados aleatoriamente.
+
 ## Plugins
 
 Atualmente, dois plugins oficiais estão disponíveis:

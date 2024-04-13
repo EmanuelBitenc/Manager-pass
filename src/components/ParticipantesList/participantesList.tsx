@@ -12,7 +12,7 @@ import Table from "./Table/table";
 import TableHeader from "./Table/table-header";
 import TableContent from "./Table/table-content";
 import TableRow from "./Table/tableRow";
-//import FakeData from "../../data/fakedata";
+import FakeData from "../../data/fakedata";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt-br";
@@ -72,42 +72,71 @@ const ParticipantesList = () => {
 
   const proximaPagina = () => {
     if (pagina) {
-      setPaginaAtual(pagina + 1);
+      // setPaginaAtual(pagina + 1);
+      setPagina(pagina + 1);
     }
   };
   const paginaAnterior = () => {
     if (pagina) {
-      setPaginaAtual(pagina - 1);
+      //  setPaginaAtual(pagina - 1);
+      setPagina(pagina - 1);
     }
   };
   const primeiraPagina = () => {
-    setPaginaAtual(1);
+    //  setPaginaAtual(1);
+    setPagina(1);
   };
 
   const ultimaPagina = () => {
-    setPaginaAtual(totalPaginas);
+    // setPaginaAtual(totalPaginas);
+    setPagina(totalPaginas);
   };
 
+  const [fetchData] = useState(false);
+
   useEffect(() => {
-    const url = new URL(
-      "http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees"
-    );
+    if (fetchData) {
+      const url = new URL(
+        "http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendeesX" //Remova o X
+      );
 
-    if (pagina) {
-      url.searchParams.set("pageIndex", String(pagina - 1));
+      if (pagina) {
+        url.searchParams.set("pageIndex", String(pagina - 1));
+      }
+      if (pesquisa && pesquisa.length > 1) {
+        url.searchParams.set("query", pesquisa);
+      }
+
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setParticipantes(data.attendees);
+          setTotal(data.total);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          const filteredFakeData = FakeData.filter((participante) =>
+            participante.name
+              .toLowerCase()
+              .includes(pesquisa?.toLowerCase() ?? "")
+          );
+          setParticipantes(filteredFakeData);
+          setTotal(filteredFakeData.length);
+        });
+    } else {
+      const filteredFakeData = FakeData.filter((participante) =>
+        participante.name.toLowerCase().includes(pesquisa?.toLowerCase() ?? "")
+      );
+      setParticipantes(filteredFakeData);
+      setTotal(filteredFakeData.length);
     }
-    if (pesquisa && pesquisa.length > 1) {
-      url.searchParams.set("query", pesquisa);
-    }
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setParticipantes(data.attendees);
-        setTotal(data.total);
-      });
-  }, [pagina, pesquisa]);
-
+  }, [pagina, pesquisa, fetchData]);
+  const valorItens = participantes.slice((pagina - 1) * 9, pagina * 9).length;
   return (
     <div className="container">
       <div className=" flex gap-8 items-center  my-2">
@@ -140,7 +169,7 @@ const ParticipantesList = () => {
           </tr>
         </thead>
         <tbody>
-          {participantes.map((data) => {
+          {participantes.slice((pagina - 1) * 9, pagina * 9).map((data) => {
             return (
               <TableRow key={data.id}>
                 <TableContent style={{ width: 48 }}>
@@ -161,9 +190,9 @@ const ParticipantesList = () => {
                 <TableContent>{dayjs().to(data.createdAt)}</TableContent>
                 <TableContent>
                   {data.checkedInAt ? (
-                    <span className="text-zinc-400">Não fez check-in</span>
-                  ) : (
                     dayjs().to(data.checkedInAt)
+                  ) : (
+                    <span className="text-zinc-400">Não fez check-in</span>
                   )}
                 </TableContent>
                 <TableContent style={{ width: 64 }}>
@@ -181,7 +210,7 @@ const ParticipantesList = () => {
               className="py-3 px-4 text-sm text-zinc-300"
               colSpan={3}
             >
-              Mostrando {participantes.length} de {total}
+              Mostrando {valorItens} de {total}
             </TableContent>
             <TableContent className="text-right" colSpan={3}>
               <div className="inline-flex gap-3 items-center">
