@@ -11,7 +11,9 @@ const Header = () => {
               <img src={icon} />
             </a>
           </li>
-          <li className="text-white text-3xl cursor-default">Manager Pass</li>
+          <li className="text-white text-3xl cursor-default font-google ">
+            Manager Pass
+          </li>
           <div className="flex gap-5 items-center  ">
             <NavLink href="/eventos" checked={false}>
               Eventos
