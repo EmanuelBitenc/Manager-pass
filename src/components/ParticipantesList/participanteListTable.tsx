@@ -10,47 +10,74 @@ import Table from "./Table/table";
 import TableHeader from "./Table/table-header";
 import TableContent from "./Table/table-content";
 import TableRow from "./Table/tableRow";
-import FakeData from "../../data/fakedata";
+//import FakeData from "../../data/fakedata";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt-br";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
 
 interface ParticipanteProps {
-  pagina: number;
-  setPagina: Dispatch<SetStateAction<number>>;
+  pesquisa: string | null;
+  setPesquisa: Dispatch<SetStateAction<string | null>>;
+  pagina: number | null;
+  setPagina: Dispatch<React.SetStateAction<number>>;
+
+  setPaginaAtual: (page: number) => void;
+}
+interface ParticipanteDATA {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  checkedInAt: string | null;
 }
 
 const ParticipanteListTable = (props: ParticipanteProps) => {
-  const totalPaginas = Math.round(FakeData.length / 10);
+  const [participantes, setParticipantes] = useState<ParticipanteDATA[]>([]);
+  const [total, setTotal] = useState(0);
+
+  const totalPaginas = Math.ceil(total / 10);
 
   const proximaPagina = () => {
-    if (props.pagina == totalPaginas) {
-      return;
+    if (props.pagina) {
+      props.setPaginaAtual(props.pagina + 1);
     }
-    props.setPagina(props.pagina + 1);
   };
   const paginaAnterior = () => {
-    if (props.pagina == 1) {
-      return;
+    if (props.pagina) {
+      props.setPaginaAtual(props.pagina - 1);
     }
-    props.setPagina(props.pagina - 1);
   };
   const primeiraPagina = () => {
-    props.setPagina(1);
+    props.setPaginaAtual(1);
   };
 
   const ultimaPagina = () => {
-    props.setPagina(totalPaginas);
+    props.setPaginaAtual(totalPaginas);
   };
 
-  const itensPagina = FakeData.slice(
-    (props.pagina - 1) * 10,
-    props.pagina * 10
-  );
+  useEffect(() => {
+    const url = new URL(
+      "http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees"
+    );
+
+    if (props.pagina) {
+      url.searchParams.set("pageIndex", String(props.pagina - 1));
+    }
+    if (props.pesquisa && props.pesquisa.length > 1) {
+      url.searchParams.set("query", props.pesquisa);
+    }
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setParticipantes(data.attendees);
+        setTotal(data.total);
+      });
+  }, [props.pagina, props.pesquisa]);
 
   return (
     <Table>
@@ -70,7 +97,7 @@ const ParticipanteListTable = (props: ParticipanteProps) => {
         </tr>
       </thead>
       <tbody>
-        {itensPagina.map((data) => {
+        {participantes.map((data) => {
           return (
             <TableRow key={data.id}>
               <TableContent style={{ width: 48 }}>
@@ -82,12 +109,18 @@ const ParticipanteListTable = (props: ParticipanteProps) => {
               <TableContent>{data.id}</TableContent>
               <TableContent>
                 <div className="flex flex-col gap-1">
-                  <span className="font-semibold text-white">{data.nome}</span>
+                  <span className="font-semibold text-white">{data.name}</span>
                   <span>{data.email}</span>
                 </div>
               </TableContent>
-              <TableContent>{dayjs().to(data.inscricaoData)}</TableContent>
-              <TableContent>{dayjs().to(data.checkinData)}</TableContent>
+              <TableContent>{dayjs().to(data.createdAt)}</TableContent>
+              <TableContent>
+                {data.checkedInAt ? (
+                  <span className="text-zinc-400">Não fez check-in</span>
+                ) : (
+                  dayjs().to(data.checkedInAt)
+                )}
+              </TableContent>
               <TableContent style={{ width: 64 }}>
                 <IconButton transparent>
                   <MoreHorizontal className="size-5" />
@@ -100,7 +133,7 @@ const ParticipanteListTable = (props: ParticipanteProps) => {
       <tfoot>
         <tr>
           <TableContent className="py-3 px-4 text-sm text-zinc-300" colSpan={3}>
-            Mostrando {itensPagina.length} de {FakeData.length}
+            Mostrando {participantes.length} de {total}
           </TableContent>
           <TableContent className="text-right" colSpan={3}>
             <div className="inline-flex gap-3 items-center">

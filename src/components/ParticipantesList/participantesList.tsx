@@ -3,7 +3,43 @@ import ParticipanteListTable from "./participanteListTable";
 import { useState } from "react";
 
 const ParticipantesList = () => {
-  const [pagina, setPagina] = useState(1);
+  const [pagina, setPagina] = useState(() => {
+    const url = new URL(window.location.toString());
+
+    if (url.searchParams.has("page")) {
+      return Number(url.searchParams.get("page"));
+    }
+
+    return 1;
+  });
+
+  const setPaginaAtual = (page: number) => {
+    const url = new URL(window.location.toString());
+    url.searchParams.set("page", String(page));
+
+    window.history.pushState({}, "", url);
+    setPagina(page);
+  };
+
+  const [pesquisa, setPesquisa] = useState(() => {
+    const url = new URL(window.location.toString());
+    if (url.searchParams.has("search")) {
+      setPaginaAtual(1);
+      return url.searchParams.get("search");
+    }
+
+    return "";
+  });
+
+  const setPesquisaAtual = (pesquisa: string) => {
+    const url = new URL(window.location.toString());
+    setPagina(1);
+    url.searchParams.set("search", pesquisa);
+    window.history.pushState({}, "", url.toString());
+    if (setPesquisa) {
+      setPesquisa(pesquisa);
+    }
+  };
 
   return (
     <div className="container">
@@ -13,12 +49,20 @@ const ParticipantesList = () => {
           <Search className="size-4 " />
           <input
             type="text"
+            value={pesquisa ?? ""}
             placeholder="Buscar Inscritos"
             className=" bg-transparent border-none  flex-1 outline-none "
+            onChange={(e) => setPesquisaAtual(e.target.value)}
           />
         </div>
       </div>
-      <ParticipanteListTable pagina={pagina} setPagina={setPagina} />
+      <ParticipanteListTable
+        pesquisa={pesquisa}
+        setPesquisa={setPesquisa}
+        pagina={pagina}
+        setPagina={setPagina}
+        setPaginaAtual={setPaginaAtual}
+      />
     </div>
   );
 };
