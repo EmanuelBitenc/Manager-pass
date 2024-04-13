@@ -1,30 +1,37 @@
-# React + TypeScript + Vite
+# Manager Pass
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é voltado para a gestão de eventos. Ele consome uma API que fornece informações sobre os participantes dos eventos, permitindo uma organização eficiente e eficaz dos dados dos participantes. Com essas informações, os organizadores do evento podem gerenciar melhor seus eventos, entender quem são seus participantes e tomar decisões informadas.
 
-Currently, two official plugins are available:
+Este é um projeto React com TypeScript e Vite, utilizando também a biblioteca de CSS Tailwind para estilização. Ele fornece uma configuração mínima para fazer o React funcionar no Vite com Hot Module Replacement (HMR) e algumas regras do ESLint.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Recursos
 
-## Expanding the ESLint configuration
+- React para a interface do usuário
+- TypeScript para tipagem estática
+- Vite para um ambiente de desenvolvimento rápido e eficiente
+- Tailwind para estilização rápida e eficaz
+- ESLint para garantir a qualidade do código
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Fontes
 
-- Configure the top-level `parserOptions` property like this:
+Este projeto utiliza as fontes Montserrat e Urbanist, importadas diretamente do Google Fonts. Elas foram escolhidas para proporcionar uma melhor experiência visual ao usuário.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Back-end
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+O back-end deste projeto foi desenvolvido pela Rocketseat no projeto NLW-Unite em Node.js. Você pode encontrar o repositório do back-end [aqui](https://github.com/rocketseat-education/nlw-unite-nodejs).
+
+## Plugins
+
+Atualmente, dois plugins oficiais estão disponíveis:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) usa [Babel](https://babeljs.io/) para Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) usa [SWC](https://swc.rs/) para Fast Refresh
+
+## Como executar o projeto
+
+1. Clone este repositório
+2. Instale as dependências com `npm install`
+3. Inicie o servidor de desenvolvimento com `npm run dev`
+4. Abra `http://localhost:3000` no seu navegador
+
+Obrigado.
